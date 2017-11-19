@@ -203,7 +203,11 @@ class KerasSymbol(object):
 
 
     def bind(self, data):
-        self.tensor = data
+        if not hasattr(self, 'tensor'):
+            self.tensor = data
+        else:
+            self.tensor[:] = data
+            
         if self.name in self._bind_values:
             assert self._bind_values[self.name].shape == data.shape, \
                 "Redefinition of variable %s" % self.name
